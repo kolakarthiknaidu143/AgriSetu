@@ -1,0 +1,6 @@
+{
+  "name": "AgriSetu - Agricultural Market Intelligence & Transaction Platform",
+  "description": "AI-powered agricultural market intelligence, price prediction, verified buyer matching, lot creation, simulated escrow, and transparent transaction platform for Farmers and FPOs.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

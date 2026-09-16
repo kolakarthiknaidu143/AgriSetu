@@ -42,15 +42,33 @@ export default function App() {
               <Route path="/fpo" element={<FpoDashboard />} />
               <Route path="/buyer" element={<BuyerDashboard />} />
               <Route path="/admin" element={<AdminDashboard />} />
+              {/* Mandi Prices */}
+              <Route path="/mandi-prices" element={<MarketIntelligencePage />} />
+              <Route path="/market-prices" element={<MarketIntelligencePage />} />
               <Route path="/market-intelligence" element={<MarketIntelligencePage />} />
+              <Route path="/mandi" element={<MarketIntelligencePage />} />
+
+              {/* AI Prediction */}
               <Route path="/price-prediction" element={<PricePredictionPage />} />
+              <Route path="/ai-prediction" element={<PricePredictionPage />} />
+
+              {/* Sale Window */}
               <Route path="/sale-window" element={<SaleWindowPage />} />
+
+              {/* Buyer Marketplace */}
+              <Route path="/buyer-marketplace" element={<MarketplacePage />} />
               <Route path="/marketplace" element={<MarketplacePage />} />
+              <Route path="/buyers" element={<MarketplacePage />} />
               <Route path="/buyer-matching" element={<BuyerMatchingPage />} />
               <Route path="/lots" element={<LotsPage />} />
               <Route path="/lots/create" element={<CreateLotPage />} />
               <Route path="/quality-grading" element={<QualityGradingPage />} />
+
+              {/* Storage & Warehouses */}
+              <Route path="/storage-warehouses" element={<StoragePage />} />
               <Route path="/storage" element={<StoragePage />} />
+              <Route path="/warehouses" element={<StoragePage />} />
+              <Route path="/cold-storage" element={<StoragePage />} />
               <Route path="/orders" element={<OrdersPage />} />
               <Route path="/transactions" element={<OrdersPage />} />
               <Route path="/offers" element={<OrdersPage />} />

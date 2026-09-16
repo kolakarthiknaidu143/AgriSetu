@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import { IBuyerRequirement, IOrder, IOffer } from '../types';
+import { IBuyerRequirement, IOrder, IOffer, ICropLot } from '../types';
 import {
   Building2,
   ShieldCheck,
@@ -13,13 +13,19 @@ import {
   CheckCircle2,
   Clock,
   Warehouse,
-  Scale
+  Scale,
+  MessageSquare,
+  Layers,
+  MapPin,
+  Sparkles
 } from 'lucide-react';
 
 export const BuyerDashboard: React.FC = () => {
   const { user, setIsDemoModalOpen } = useAuth();
   const [requirements, setRequirements] = useState<IBuyerRequirement[]>([]);
   const [orders, setOrders] = useState<IOrder[]>([]);
+  const [offers, setOffers] = useState<IOffer[]>([]);
+  const [availableLots, setAvailableLots] = useState<ICropLot[]>([]);
   const [loading, setLoading] = useState(true);
 
   // New requirement modal
@@ -34,12 +40,26 @@ export const BuyerDashboard: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [reqsRes, ordersRes] = await Promise.all([
+      const [reqsRes, ordersRes, offersRes, lotsRes] = await Promise.all([
         api.getBuyerRequirements({}),
-        api.getOrders()
+        api.getOrders(),
+        api.getOffers().catch(() => ({ offers: [] })),
+        api.getLots({ status: 'Listed' }).catch(() => ({ lots: [] }))
       ]);
-      setRequirements(reqsRes.requirements);
-      setOrders(ordersRes.orders);
+
+      // Filter requirements to buyer-relevant data
+      const allReqs = reqsRes.requirements || [];
+      const buyerReqs = allReqs.filter(
+        (r: any) =>
+          r.buyerId === user?._id ||
+          r.buyerCompany === user?.name ||
+          (user?.email?.includes('buyer') && (r.buyerCompany?.includes('ABC') || r.buyerName?.includes('ABC')))
+      );
+      setRequirements(buyerReqs.length > 0 ? buyerReqs : allReqs.slice(0, 3));
+
+      setOrders(ordersRes.orders || []);
+      setOffers(offersRes.offers || []);
+      setAvailableLots((lotsRes.lots || []).slice(0, 3));
     } catch (err) {
       console.warn('Buyer dashboard data error:', err);
     } finally {
@@ -73,12 +93,29 @@ export const BuyerDashboard: React.FC = () => {
     }
   };
 
+  // Dynamic KPI calculations
+  const totalDemandVolume = requirements.reduce(
+    (sum, r: any) => sum + (Number(r.targetQuantity || r.quantity) || 0),
+    0
+  );
+
+  const activeInboundOrders = orders.filter(
+    (o) => o.status === 'IN TRANSIT' || o.status === 'ACCEPTED' || o.status === 'CONFIRMED'
+  );
+
+  const lockedEscrowAmount = activeInboundOrders.reduce(
+    (sum, o) => sum + (Number(o.totalCropValue || o.totalAmount) || 140000),
+    0
+  );
+
+  const pendingOffersCount = offers.filter((o) => o.status === 'PENDING' || o.status === 'COUNTERED').length;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header */}
       <div className="rounded-2xl bg-gradient-to-r from-blue-950 via-blue-900 to-stone-900 p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30 flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-blue-300" />
               <span>Verified Institutional Buyer</span>
@@ -100,12 +137,19 @@ export const BuyerDashboard: React.FC = () => {
           >
             <span>⚡ 20-Step Live Tour</span>
           </button>
+          <Link
+            to="/buyer-marketplace"
+            className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-bold shadow-md transition-colors flex items-center gap-1.5"
+          >
+            <Layers className="w-4 h-4" />
+            <span>🛒 Explore Marketplace Lots</span>
+          </Link>
           <button
             onClick={() => setIsModalOpen(true)}
             className="px-4 py-2.5 rounded-xl bg-white text-blue-950 text-xs sm:text-sm font-bold shadow-md hover:bg-stone-100 transition-colors flex items-center gap-1.5"
           >
             <PlusCircle className="w-4 h-4 text-blue-700" />
-            <span>+ Post Procurement Demand</span>
+            <span>+ Post Demand</span>
           </button>
         </div>
       </div>
@@ -114,28 +158,138 @@ export const BuyerDashboard: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-5 rounded-2xl bg-white border border-stone-200 shadow-xs space-y-1">
           <span className="text-xs text-stone-500 font-semibold">Active Demand Volume</span>
-          <div className="font-heading font-black text-2xl text-stone-900">1,500 Quintals</div>
+          <div className="font-heading font-black text-2xl text-stone-900">
+            {totalDemandVolume > 0 ? `${totalDemandVolume.toLocaleString('en-IN')} Quintals` : '1,500 Quintals'}
+          </div>
           <p className="text-[11px] text-blue-700 font-semibold">Processing batch requirements</p>
         </div>
 
         <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 shadow-xs space-y-1">
-          <span className="text-xs text-emerald-900 font-bold">SIMULATED ESCROW — Prototype</span>
-          <div className="font-heading font-black text-2xl text-emerald-950">₹1,40,000</div>
+          <span className="text-xs text-emerald-900 font-bold">SIMULATED ESCROW — Locked</span>
+          <div className="font-heading font-black text-2xl text-emerald-950">
+            ₹{lockedEscrowAmount > 0 ? lockedEscrowAmount.toLocaleString('en-IN') : '1,40,000'}
+          </div>
           <p className="text-[11px] text-emerald-800">100% conditional hold for Lot 001</p>
         </div>
 
         <div className="p-5 rounded-2xl bg-white border border-stone-200 shadow-xs space-y-1">
           <span className="text-xs text-stone-500 font-semibold">Inbound Trucks</span>
-          <div className="font-heading font-black text-2xl text-stone-900">1 In Transit</div>
+          <div className="font-heading font-black text-2xl text-stone-900">
+            {activeInboundOrders.length > 0 ? `${activeInboundOrders.length} In Transit` : '1 In Transit'}
+          </div>
           <p className="text-[11px] text-stone-500">AP-03-TC-8910 arriving today</p>
         </div>
 
         <div className="p-5 rounded-2xl bg-blue-50 border border-blue-200 shadow-xs space-y-1">
-          <span className="text-xs text-blue-900 font-bold">Farmer Reliability Score</span>
-          <div className="font-heading font-black text-2xl text-blue-950">98.6%</div>
-          <p className="text-[11px] text-blue-800">Zero contract repudiation</p>
+          <span className="text-xs text-blue-900 font-bold">Active Purchase Offers</span>
+          <div className="font-heading font-black text-2xl text-blue-950">
+            {offers.length > 0 ? `${offers.length} Active` : '1 Active'}
+          </div>
+          <p className="text-[11px] text-blue-800">
+            {offers.some((o) => o.status === 'COUNTERED') ? 'Countered — action required' : 'Farmgate negotiations'}
+          </p>
         </div>
       </div>
+
+      {/* Quick Action Navigation Bar */}
+      <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs flex items-center justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs font-bold text-stone-700">Quick Navigation:</span>
+          <Link
+            to="/buyer-marketplace"
+            className="px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-700 text-white hover:bg-blue-800 transition-colors flex items-center gap-1"
+          >
+            <Layers className="w-3.5 h-3.5" />
+            <span>Buyer Marketplace (Browse Produce)</span>
+          </Link>
+          <Link
+            to="/buyer-marketplace?tab=offers"
+            className="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-100 text-amber-900 hover:bg-amber-200 transition-colors flex items-center gap-1"
+          >
+            <MessageSquare className="w-3.5 h-3.5 text-amber-700" />
+            <span>My Offers & Negotiations ({offers.length})</span>
+          </Link>
+          <Link
+            to="/orders"
+            className="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-900 hover:bg-emerald-200 transition-colors flex items-center gap-1"
+          >
+            <Scale className="w-3.5 h-3.5 text-emerald-700" />
+            <span>Orders & Weighbridge Settlement</span>
+          </Link>
+        </div>
+
+        <div className="text-xs text-stone-500 font-medium">
+          Logged in as: <strong className="text-stone-800">{user?.name || 'ABC Foods Ltd'}</strong>
+        </div>
+      </div>
+
+      {/* My Active Offers & Negotiations Highlight Card */}
+      {offers.length > 0 && (
+        <div className="bg-white p-6 rounded-2xl border border-amber-200 shadow-xs space-y-4">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="w-5 h-5 text-amber-600" />
+              <h3 className="font-bold text-base text-stone-900">My Recent Purchase Offers & Negotiations</h3>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900">
+                {offers.length} Active
+              </span>
+            </div>
+
+            <Link
+              to="/buyer-marketplace?tab=offers"
+              className="text-xs font-bold text-blue-700 hover:underline flex items-center gap-1"
+            >
+              <span>View All Negotiations</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {offers.slice(0, 2).map((offer) => (
+              <div
+                key={offer._id}
+                className="p-4 rounded-xl border border-stone-200 bg-stone-50/50 space-y-3 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-xs font-extrabold text-stone-800">{offer.offerId}</span>
+                    <span
+                      className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                        offer.status === 'COUNTERED'
+                          ? 'bg-amber-200 text-amber-950 font-black'
+                          : offer.status === 'ACCEPTED'
+                          ? 'bg-emerald-200 text-emerald-950'
+                          : 'bg-stone-200 text-stone-800'
+                      }`}
+                    >
+                      {offer.status === 'COUNTERED' ? 'FARMER COUNTERED' : offer.status}
+                    </span>
+                  </div>
+
+                  <h4 className="font-bold text-sm text-stone-900 mt-1">
+                    {offer.quantity} {offer.unit} of {offer.crop} ({offer.lotCode})
+                  </h4>
+                  <p className="text-xs text-stone-600 mt-0.5">
+                    Farmer: <strong>{offer.farmerName}</strong> • Quote: ₹{offer.currentPrice}/{offer.unit}
+                  </p>
+                </div>
+
+                <div className="pt-2 border-t border-stone-200 flex items-center justify-between text-xs">
+                  <span className="text-stone-500">
+                    Terms: <strong>{offer.transportResponsibility || 'Buyer Arranged'}</strong>
+                  </span>
+                  <Link
+                    to="/buyer-marketplace?tab=offers"
+                    className="font-bold text-blue-700 hover:underline flex items-center gap-1"
+                  >
+                    <span>Inspect & Respond →</span>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Active Demands & Inbound Shipments Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -152,7 +306,7 @@ export const BuyerDashboard: React.FC = () => {
           </div>
 
           <div className="space-y-3">
-            {requirements.map((req) => (
+            {requirements.map((req: any) => (
               <div
                 key={req._id}
                 className="p-4 rounded-xl border border-stone-200 bg-stone-50/50 space-y-2"
@@ -160,15 +314,16 @@ export const BuyerDashboard: React.FC = () => {
                 <div className="flex items-start justify-between">
                   <div>
                     <h4 className="font-bold text-sm text-stone-900">
-                      {req.targetQuantity} {req.unit} of {req.crop}
+                      {req.targetQuantity || req.quantity} {req.unit || 'quintal'} of {req.crop}
                     </h4>
                     <p className="text-xs text-stone-500">
-                      Grade: {req.qualityGradeRequired} • Destination: {req.destinationHub}
+                      Grade: {req.qualityGradeRequired || req.requiredGrade || 'Grade A'} • Destination:{' '}
+                      {req.destinationHub || req.deliveryLocation || 'Sri City Mega Food Park, AP'}
                     </p>
                   </div>
                   <div className="text-right">
                     <span className="font-black text-base text-emerald-800">
-                      ₹{req.targetPricePerUnit.toLocaleString('en-IN')}/{req.unit}
+                      ₹{Number(req.targetPricePerUnit || req.minPrice || 2800).toLocaleString('en-IN')}/{req.unit || 'qtl'}
                     </span>
                     <span className="text-[10px] text-stone-500 block">Offered Budget</span>
                   </div>
@@ -178,8 +333,8 @@ export const BuyerDashboard: React.FC = () => {
                   <span className="text-stone-600">
                     Logistics: <strong>{req.transportProvided ? 'Buyer Truck Arranged' : 'Farmer Delivery'}</strong>
                   </span>
-                  <Link to="/lots" className="font-bold text-blue-700 hover:underline">
-                    Inspect Farmer Lots →
+                  <Link to="/buyer-marketplace" className="font-bold text-blue-700 hover:underline">
+                    Inspect Farmer Lots in Marketplace →
                   </Link>
                 </div>
               </div>
@@ -218,6 +373,67 @@ export const BuyerDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Featured Lots in Marketplace */}
+      {availableLots.length > 0 && (
+        <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-4">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <h3 className="font-bold text-base text-stone-900 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-emerald-600" />
+                <span>Featured Crop Lots Ready for Procurement</span>
+              </h3>
+              <p className="text-xs text-stone-500">
+                Directly from verified producers with certified quality inspection reports.
+              </p>
+            </div>
+
+            <Link
+              to="/buyer-marketplace"
+              className="text-xs font-bold text-blue-700 hover:underline flex items-center gap-1"
+            >
+              <span>View All Produce in Marketplace</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {availableLots.map((lot) => (
+              <div
+                key={lot._id}
+                className="p-4 rounded-xl border border-stone-200 bg-stone-50/50 space-y-2 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-bold text-blue-800">{lot.lotId}</span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                      {lot.qualityGrade}
+                    </span>
+                  </div>
+                  <h4 className="font-bold text-sm text-stone-900 mt-1">
+                    {lot.crop} ({lot.variety})
+                  </h4>
+                  <p className="text-xs text-stone-500">
+                    {lot.quantity} {lot.unit} • {lot.district}, {lot.state}
+                  </p>
+                </div>
+
+                <div className="pt-2 border-t border-stone-200 flex items-center justify-between">
+                  <span className="font-black text-sm text-emerald-800">
+                    ₹{lot.expectedPrice?.toLocaleString('en-IN')}/{lot.unit}
+                  </span>
+                  <Link
+                    to="/buyer-marketplace"
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-700 text-white hover:bg-blue-800 transition-colors"
+                  >
+                    Make Offer →
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Post Requirement Modal */}
       {isModalOpen && (

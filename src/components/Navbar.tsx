@@ -82,9 +82,9 @@ export const Navbar: React.FC = () => {
             {/* Desktop Navigation Links */}
             <nav className="hidden lg:flex items-center space-x-1">
               <Link
-                to="/market-intelligence"
+                to="/mandi-prices"
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  location.pathname === '/market-intelligence'
+                  location.pathname === '/mandi-prices' || location.pathname === '/market-intelligence' || location.pathname === '/market-prices'
                     ? 'text-emerald-800 bg-emerald-50 font-semibold'
                     : 'text-stone-600 hover:text-emerald-800 hover:bg-stone-50'
                 }`}
@@ -94,7 +94,7 @@ export const Navbar: React.FC = () => {
               <Link
                 to="/price-prediction"
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  location.pathname === '/price-prediction'
+                  location.pathname === '/price-prediction' || location.pathname === '/ai-prediction'
                     ? 'text-emerald-800 bg-emerald-50 font-semibold'
                     : 'text-stone-600 hover:text-emerald-800 hover:bg-stone-50'
                 }`}
@@ -112,9 +112,9 @@ export const Navbar: React.FC = () => {
                 {language === 'te' ? 'విక్రయ సమయం' : 'Sale Window'}
               </Link>
               <Link
-                to="/marketplace"
+                to="/buyer-marketplace"
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  location.pathname === '/marketplace'
+                  location.pathname === '/buyer-marketplace' || location.pathname === '/marketplace' || location.pathname === '/buyers'
                     ? 'text-emerald-800 bg-emerald-50 font-semibold'
                     : 'text-stone-600 hover:text-emerald-800 hover:bg-stone-50'
                 }`}
@@ -122,9 +122,9 @@ export const Navbar: React.FC = () => {
                 {language === 'te' ? 'కొనుగోలుదారులు' : 'Buyer Marketplace'}
               </Link>
               <Link
-                to="/storage"
+                to="/storage-warehouses"
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  location.pathname === '/storage'
+                  location.pathname === '/storage-warehouses' || location.pathname === '/storage' || location.pathname === '/warehouses'
                     ? 'text-emerald-800 bg-emerald-50 font-semibold'
                     : 'text-stone-600 hover:text-emerald-800 hover:bg-stone-50'
                 }`}
@@ -423,10 +423,10 @@ export const Navbar: React.FC = () => {
             </Link>
 
             <Link
-              to="/market-intelligence"
+              to="/mandi-prices"
               onClick={() => setMobileMenuOpen(false)}
               className={`flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                location.pathname === '/market-intelligence'
+                location.pathname === '/mandi-prices' || location.pathname === '/market-intelligence' || location.pathname === '/market-prices'
                   ? 'bg-emerald-100/70 text-emerald-950 font-bold'
                   : 'text-stone-700 hover:bg-stone-100'
               }`}
@@ -438,7 +438,7 @@ export const Navbar: React.FC = () => {
               to="/price-prediction"
               onClick={() => setMobileMenuOpen(false)}
               className={`flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                location.pathname === '/price-prediction'
+                location.pathname === '/price-prediction' || location.pathname === '/ai-prediction'
                   ? 'bg-emerald-100/70 text-emerald-950 font-bold'
                   : 'text-stone-700 hover:bg-stone-100'
               }`}
@@ -459,10 +459,10 @@ export const Navbar: React.FC = () => {
             </Link>
 
             <Link
-              to="/marketplace"
+              to="/buyer-marketplace"
               onClick={() => setMobileMenuOpen(false)}
               className={`flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                location.pathname === '/marketplace'
+                location.pathname === '/buyer-marketplace' || location.pathname === '/marketplace' || location.pathname === '/buyers'
                   ? 'bg-emerald-100/70 text-emerald-950 font-bold'
                   : 'text-stone-700 hover:bg-stone-100'
               }`}
@@ -483,10 +483,10 @@ export const Navbar: React.FC = () => {
             </Link>
 
             <Link
-              to="/storage"
+              to="/storage-warehouses"
               onClick={() => setMobileMenuOpen(false)}
               className={`flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                location.pathname === '/storage'
+                location.pathname === '/storage-warehouses' || location.pathname === '/storage' || location.pathname === '/warehouses'
                   ? 'bg-emerald-100/70 text-emerald-950 font-bold'
                   : 'text-stone-700 hover:bg-stone-100'
               }`}

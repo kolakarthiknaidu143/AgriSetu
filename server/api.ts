@@ -651,7 +651,9 @@ apiRouter.get('/offers', authenticateToken, (req: AuthRequest, res: Response) =>
 // POST /api/offers
 apiRouter.post('/offers', authenticateToken, requireRole('buyer', 'admin'), (req: AuthRequest, res: Response) => {
   try {
-    const { lotId, quantity, price, transportResponsibility, paymentTerms, deliveryDate, initialMessage } = req.body;
+    const { lotId, quantity, transportResponsibility, paymentTerms, deliveryDate, initialMessage } = req.body;
+    const rawPrice = req.body.price !== undefined ? req.body.price : req.body.offeredPrice;
+    const price = Number(rawPrice);
     const lot = db.lots.find(l => l._id === lotId || l.lotId === lotId);
     if (!lot) return res.status(404).json({ error: 'Lot not found' });
 

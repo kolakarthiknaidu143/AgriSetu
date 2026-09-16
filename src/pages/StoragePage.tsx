@@ -31,9 +31,11 @@ export const StoragePage: React.FC = () => {
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
-  const handleBook = (facility: IColdStorage) => {
-    const totalCost = facility.dailyRatePerQuintal * bookingDays * bookingQuantity;
-    alert(`Space reserved at ${facility.name}!\nQuantity: ${bookingQuantity} quintals for ${bookingDays} days.\nTotal simulated fee: ₹${totalCost.toLocaleString('en-IN')}.\nGate pass OTP sent to registered mobile.`);
+  const handleBook = (facility: any) => {
+    const dailyRate = facility.dailyCostPerQtl ?? facility.dailyRatePerQuintal ?? 2.2;
+    const facName = facility.facilityName || facility.name || 'Cold Storage Facility';
+    const totalCost = dailyRate * bookingDays * bookingQuantity;
+    alert(`Space reserved at ${facName}!\nQuantity: ${bookingQuantity} quintals for ${bookingDays} days.\nTotal simulated fee: ₹${totalCost.toLocaleString('en-IN')}.\nGate pass OTP sent to registered mobile.`);
   };
 
   return (
@@ -56,74 +58,91 @@ export const StoragePage: React.FC = () => {
 
       {/* Facilities Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {facilities.map((fac) => (
-          <div
-            key={fac._id}
-            className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-xs hover:border-orange-400 hover:shadow-md transition-all flex flex-col justify-between"
-          >
-            <div className="p-5 border-b border-stone-100 space-y-3">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="font-bold text-base text-stone-900">{fac.name}</h3>
-                  <div className="flex items-center gap-1 text-xs text-stone-500 mt-0.5">
-                    <MapPin className="w-3.5 h-3.5 text-stone-400" />
-                    <span>{fac.location}, {fac.district}</span>
+        {facilities.map((fac: any) => {
+          const facName = fac.facilityName || fac.name || 'Agri Warehouse Facility';
+          const loc = fac.location || 'Terminal Hub';
+          const dist = fac.district ? `, ${fac.district}` : '';
+          const sType = fac.storageType || fac.type || 'Cold Storage';
+          const availCap = fac.availableCapacityTonnes ?? 500;
+          const totCap = fac.capacityTonnes ?? fac.totalCapacityTonnes ?? 1000;
+          const dailyRate = fac.dailyCostPerQtl ?? fac.dailyRatePerQuintal ?? 2.2;
+          const temp = fac.temperatureRange || (sType.toLowerCase().includes('cold') ? '0°C to 4°C' : 'Ambient (18-25°C)');
+          const humidity = fac.humidityRange || (sType.toLowerCase().includes('cold') ? '85% - 95%' : '60% - 70%');
+          const cropsList = Array.isArray(fac.suitableCrops)
+            ? fac.suitableCrops
+            : Array.isArray(fac.supportedCrops)
+            ? fac.supportedCrops
+            : ['Tomato', 'Chilli', 'Vegetables'];
+
+          return (
+            <div
+              key={fac._id || facName}
+              className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-xs hover:border-orange-400 hover:shadow-md transition-all flex flex-col justify-between"
+            >
+              <div className="p-5 border-b border-stone-100 space-y-3">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="font-bold text-base text-stone-900">{facName}</h3>
+                    <div className="flex items-center gap-1 text-xs text-stone-500 mt-0.5">
+                      <MapPin className="w-3.5 h-3.5 text-stone-400" />
+                      <span>{loc}{dist}</span>
+                    </div>
+                  </div>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-stone-100 text-stone-700">
+                    {sType}
+                  </span>
+                </div>
+
+                <div className="p-3 rounded-xl bg-orange-50/60 border border-orange-100 flex items-baseline justify-between">
+                  <div>
+                    <span className="text-[10px] text-stone-500 block">Available Capacity:</span>
+                    <span className="text-sm font-bold text-stone-900">
+                      {availCap} / {totCap} Tonnes
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] text-stone-500 block">Daily Tariff:</span>
+                    <span className="text-lg font-black text-orange-950">
+                      ₹{dailyRate}
+                    </span>
+                    <span className="text-[10px] text-stone-500 block">/quintal/day</span>
                   </div>
                 </div>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-stone-100 text-stone-700">
-                  {fac.type}
-                </span>
               </div>
 
-              <div className="p-3 rounded-xl bg-orange-50/60 border border-orange-100 flex items-baseline justify-between">
-                <div>
-                  <span className="text-[10px] text-stone-500 block">Available Capacity:</span>
-                  <span className="text-sm font-bold text-stone-900">
-                    {fac.availableCapacityTonnes} / {fac.totalCapacityTonnes} Tonnes
-                  </span>
+              <div className="p-5 space-y-3 flex-1 flex flex-col justify-between text-xs text-stone-600">
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span>Temperature Control:</span>
+                    <strong className="text-stone-800">{temp}</strong>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Relative Humidity:</span>
+                    <strong className="text-stone-800">{humidity}</strong>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Supported Crops:</span>
+                    <span className="text-stone-800 font-medium">{cropsList.join(', ')}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>WDRA Accreditation:</span>
+                    <strong className="text-emerald-700">Certified & Insured</strong>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <span className="text-[10px] text-stone-500 block">Daily Tariff:</span>
-                  <span className="text-lg font-black text-orange-950">
-                    ₹{fac.dailyRatePerQuintal}
-                  </span>
-                  <span className="text-[10px] text-stone-500 block">/quintal/day</span>
+
+                <div className="pt-3 border-t border-stone-100">
+                  <button
+                    onClick={() => handleBook(fac)}
+                    className="w-full py-2.5 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-sm transition-colors flex items-center justify-center gap-1.5"
+                  >
+                    <Warehouse className="w-4 h-4" />
+                    <span>Reserve Space (₹{dailyRate}/qtl)</span>
+                  </button>
                 </div>
               </div>
             </div>
-
-            <div className="p-5 space-y-3 flex-1 flex flex-col justify-between text-xs text-stone-600">
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span>Temperature Control:</span>
-                  <strong className="text-stone-800">{fac.temperatureRange}</strong>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Relative Humidity:</span>
-                  <strong className="text-stone-800">{fac.humidityRange}</strong>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Supported Crops:</span>
-                  <span className="text-stone-800 font-medium">{fac.supportedCrops.join(', ')}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>WDRA Accreditation:</span>
-                  <strong className="text-emerald-700">Certified & Insured</strong>
-                </div>
-              </div>
-
-              <div className="pt-3 border-t border-stone-100">
-                <button
-                  onClick={() => handleBook(fac)}
-                  className="w-full py-2.5 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-sm transition-colors flex items-center justify-center gap-1.5"
-                >
-                  <Warehouse className="w-4 h-4" />
-                  <span>Reserve Space (₹{fac.dailyRatePerQuintal}/qtl)</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Storage Cost Calculator Banner */}

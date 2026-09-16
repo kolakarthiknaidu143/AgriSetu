@@ -296,52 +296,60 @@ export const MarketIntelligencePage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100 text-stone-700">
-              {marketPrices.map((m) => (
-                <tr key={m._id} className="hover:bg-stone-50/80 transition-colors">
-                  <td className="px-4 py-3 font-semibold text-stone-900">
-                    <div>{m.marketName}</div>
-                    <div className="text-[10px] text-stone-500 font-normal">{m.district}, {m.state}</div>
-                  </td>
-                  <td className="px-4 py-3">{m.cropName}</td>
-                  <td className="px-4 py-3">₹{m.minPrice.toLocaleString('en-IN')}</td>
-                  <td className="px-4 py-3 font-bold text-stone-900">
-                    ₹{m.modalPrice.toLocaleString('en-IN')}
-                  </td>
-                  <td className="px-4 py-3 text-stone-600">₹{m.maxPrice.toLocaleString('en-IN')}</td>
-                  <td className="px-4 py-3">
-                    <span className="font-medium">{m.arrivalQuantity}</span> {m.arrivalUnit}
-                  </td>
-                  <td className="px-4 py-3 text-rose-600 font-medium">
-                    -₹{m.transportCostPerQtl || 100}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="font-black text-emerald-800 text-sm">
-                      ₹{(m.netRealizationPerQtl || m.modalPrice - 140).toLocaleString('en-IN')}
-                    </span>
-                    {m.isBestNetRealization && (
-                      <span className="ml-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800">
-                        BEST
+              {marketPrices.map((m) => {
+                const minP = m.minPrice ?? 0;
+                const modalP = m.modalPrice ?? 0;
+                const maxP = m.maxPrice ?? 0;
+                const netReal = m.netRealizationPerQtl || (modalP - 140);
+                const pct = m.priceChangePercentage ?? 0;
+
+                return (
+                  <tr key={m._id} className="hover:bg-stone-50/80 transition-colors">
+                    <td className="px-4 py-3 font-semibold text-stone-900">
+                      <div>{m.marketName}</div>
+                      <div className="text-[10px] text-stone-500 font-normal">{m.district}, {m.state}</div>
+                    </td>
+                    <td className="px-4 py-3">{m.cropName}</td>
+                    <td className="px-4 py-3">₹{minP.toLocaleString('en-IN')}</td>
+                    <td className="px-4 py-3 font-bold text-stone-900">
+                      ₹{modalP.toLocaleString('en-IN')}
+                    </td>
+                    <td className="px-4 py-3 text-stone-600">₹{maxP.toLocaleString('en-IN')}</td>
+                    <td className="px-4 py-3">
+                      <span className="font-medium">{m.arrivalQuantity || 0}</span> {m.arrivalUnit || 'tonnes'}
+                    </td>
+                    <td className="px-4 py-3 text-rose-600 font-medium">
+                      -₹{m.transportCostPerQtl || 100}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className="font-black text-emerald-800 text-sm">
+                        ₹{netReal.toLocaleString('en-IN')}
                       </span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <span
-                      className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                        m.trend === 'RISING'
-                          ? 'bg-emerald-100 text-emerald-800'
-                          : m.trend === 'FALLING'
-                          ? 'bg-rose-100 text-rose-800'
-                          : 'bg-stone-100 text-stone-700'
-                      }`}
-                    >
-                      {m.trend === 'RISING' && <TrendingUp className="w-3 h-3" />}
-                      {m.trend === 'FALLING' && <TrendingDown className="w-3 h-3" />}
-                      {m.trend === 'STABLE' && <Minus className="w-3 h-3" />}
-                      <span>{m.priceChangePercentage > 0 ? `+${m.priceChangePercentage}%` : `${m.priceChangePercentage}%`}</span>
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      {m.isBestNetRealization && (
+                        <span className="ml-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800">
+                          BEST
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <span
+                        className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                          m.trend === 'RISING'
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : m.trend === 'FALLING'
+                            ? 'bg-rose-100 text-rose-800'
+                            : 'bg-stone-100 text-stone-700'
+                        }`}
+                      >
+                        {m.trend === 'RISING' && <TrendingUp className="w-3 h-3" />}
+                        {m.trend === 'FALLING' && <TrendingDown className="w-3 h-3" />}
+                        {m.trend === 'STABLE' && <Minus className="w-3 h-3" />}
+                        <span>{pct > 0 ? `+${pct}%` : `${pct}%`}</span>
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

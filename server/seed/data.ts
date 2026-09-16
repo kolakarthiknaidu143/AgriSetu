@@ -758,6 +758,38 @@ export const SEED_OFFERS: IOffer[] = [
 
 export const SEED_ORDERS: IOrder[] = [
   {
+    _id: 'order-intransit-1',
+    orderId: 'ORD-2026-09-001',
+    transactionId: 'TXN-2026-000452',
+    offerId: 'offer-1',
+    lotId: 'lot-1',
+    lotCode: 'LOT-2026-000123',
+    crop: 'Tomato',
+    quantity: 50,
+    unit: 'quintal',
+    agreedPricePerUnit: 2800,
+    totalCropValue: 140000,
+    transportCost: 3600,
+    storageCost: 0,
+    platformFee: 0,
+    netRealization: 136400,
+    farmerId: 'user-farmer-1',
+    farmerName: 'Ramesh Naidu',
+    farmerPhone: '9876543210',
+    buyerId: 'user-buyer-1',
+    buyerName: 'ABC Foods Ltd',
+    buyerCompany: 'ABC Foods Ltd',
+    buyerPhone: '9876543220',
+    pickupLocation: 'Chandragiri, Chittoor District',
+    deliveryLocation: 'Sri City Mega Food Park, AP',
+    status: 'DISPATCHED',
+    escrowStatus: 'FUNDS SIMULATED / PROTECTED',
+    paymentStatus: 'PAYMENT PROCESSING',
+    logisticsId: 'logistics-intransit-1',
+    createdAt: '2026-09-15T09:00:00.000Z',
+    updatedAt: '2026-09-15T10:00:00.000Z'
+  },
+  {
     _id: 'order-completed-1',
     orderId: 'ORD-2026-000089',
     transactionId: 'TXN-2026-000451',
@@ -794,6 +826,57 @@ export const SEED_ORDERS: IOrder[] = [
 ];
 
 export const SEED_LOGISTICS: ILogistics[] = [
+  {
+    _id: 'logistics-intransit-1',
+    logisticsId: 'LOG-2026-00091',
+    orderId: 'order-intransit-1',
+    transactionId: 'TXN-2026-000452',
+    pickupLocation: 'Chandragiri, Chittoor District',
+    deliveryLocation: 'Sri City Mega Food Park, AP',
+    distanceKm: 95,
+    estimatedTransportCost: 3600,
+    estimatedDeliveryTime: '3.5 hours',
+    vehicleType: 'Tata 407 Insulated Reefer Truck',
+    vehicleNumber: 'AP-03-TC-8910',
+    driverName: 'Suresh Kumar',
+    driverPhone: '9440123456',
+    preferredDate: '2026-09-15',
+    status: 'In Transit',
+    timeline: [
+      {
+        status: 'Transport Required',
+        description: 'Order confirmed, logistics initiated for 50q Tomato batch',
+        timestamp: '2026-09-15T09:00:00.000Z',
+        completed: true
+      },
+      {
+        status: 'Vehicle Assigned',
+        description: 'Vehicle AP-03-TC-8910 assigned with driver Suresh Kumar (Venkata Logistics)',
+        timestamp: '2026-09-15T09:30:00.000Z',
+        completed: true
+      },
+      {
+        status: 'Picked Up',
+        description: 'Loaded 50 quintals at Chandragiri farm, electronic e-Way bill generated',
+        timestamp: '2026-09-15T11:00:00.000Z',
+        completed: true
+      },
+      {
+        status: 'In Transit',
+        description: 'En route via NH-716 toward Sri City, GPS telematics connected',
+        timestamp: '2026-09-15T13:00:00.000Z',
+        completed: true
+      },
+      {
+        status: 'Delivered',
+        description: 'Arriving at Sri City weighbridge for visual grade confirmation',
+        timestamp: '2026-09-15T16:00:00.000Z',
+        completed: false
+      }
+    ],
+    createdAt: '2026-09-15T09:00:00.000Z',
+    updatedAt: '2026-09-15T13:00:00.000Z'
+  },
   {
     _id: 'logistics-1',
     logisticsId: 'LOG-2026-00089',

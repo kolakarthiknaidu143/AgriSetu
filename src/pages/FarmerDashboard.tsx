@@ -164,9 +164,9 @@ export const FarmerDashboard: React.FC = () => {
       </div>
 
       {/* Top Banner / Welcome & Demo Tour Trigger */}
-      <div className="rounded-2xl bg-gradient-to-r from-emerald-900 via-emerald-800 to-stone-900 p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="rounded-2xl bg-gradient-to-r from-emerald-900 via-emerald-800 to-stone-900 p-5 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-6">
         <div className="space-y-2">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
               Farmer Command Center (Primary Showcase)
             </span>
@@ -177,25 +177,25 @@ export const FarmerDashboard: React.FC = () => {
           <h1 className="font-heading font-black text-2xl sm:text-3xl text-white">
             Namaskaram, {user?.name || 'Ramesh Naidu'} garu 🌾
           </h1>
-          <p className="text-xs sm:text-sm text-emerald-100/90 max-w-xl">
+          <p className="text-xs sm:text-sm text-emerald-100/90 max-w-xl leading-relaxed">
             Demo Market Data for <strong>Tomato</strong> shows upward momentum. Best verified buyer tender is <strong>₹2,800/qtl</strong> with guaranteed simulated escrow settlement.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full md:w-auto">
           <button
             onClick={() => setIsDemoModalOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-stone-950 text-xs sm:text-sm font-bold shadow-md active:scale-95 transition-all"
+            className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-stone-950 text-xs sm:text-sm font-bold shadow-md active:scale-95 transition-all min-h-[44px]"
           >
-            <Sparkles className="w-4 h-4 text-stone-950" />
+            <Sparkles className="w-4 h-4 text-stone-950 shrink-0" />
             <span>⚡ 20-Step Live Walkthrough</span>
           </button>
 
           <Link
             to="/lots/create"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-emerald-50 text-emerald-950 text-xs sm:text-sm font-bold shadow-md transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white hover:bg-emerald-50 text-emerald-950 text-xs sm:text-sm font-bold shadow-md transition-colors min-h-[44px]"
           >
-            <PlusCircle className="w-4 h-4 text-emerald-700" />
+            <PlusCircle className="w-4 h-4 text-emerald-700 shrink-0" />
             <span>+ Create Crop Lot</span>
           </Link>
         </div>
@@ -205,7 +205,7 @@ export const FarmerDashboard: React.FC = () => {
           CORE USP SHOWCASE: NET REALIZATION ENGINE
           Directly satisfies Requirement 3 & 4 with all 7 mandatory parameters
           ========================================================================= */}
-      <div className="bg-white rounded-2xl border-2 border-emerald-500/60 shadow-lg p-6 space-y-6">
+      <div className="bg-white rounded-2xl border-2 border-emerald-500/60 shadow-lg p-4 sm:p-6 space-y-5 sm:space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-stone-200">
           <div>
             <div className="flex items-center gap-2">
@@ -227,12 +227,12 @@ export const FarmerDashboard: React.FC = () => {
 
           {/* Quick Crop Selector for Evaluator Demo */}
           <div className="flex items-center gap-1.5 flex-wrap bg-stone-100 p-1.5 rounded-xl border border-stone-200 self-start md:self-auto">
-            <span className="text-[11px] font-bold text-stone-600 px-2">Test Crop:</span>
+            <span className="text-[11px] font-bold text-stone-600 px-1.5">Test Crop:</span>
             {(['Tomato', 'Red Chilli', 'Paddy', 'Cotton'] as const).map((crop) => (
               <button
                 key={crop}
                 onClick={() => setSimCrop(crop)}
-                className={`px-2.5 py-1 text-xs font-bold rounded-lg transition-all ${
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all min-h-[34px] ${
                   simCrop === crop
                     ? 'bg-emerald-700 text-white shadow-xs'
                     : 'text-stone-700 hover:bg-white'
@@ -245,14 +245,14 @@ export const FarmerDashboard: React.FC = () => {
         </div>
 
         {/* The 7 Required Net Realization Parameters Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3 text-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5 sm:gap-3 text-center">
           {/* 1. Current Market Price */}
-          <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200 flex flex-col justify-between">
-            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+          <div className="p-3 sm:p-3.5 rounded-xl bg-stone-50 border border-stone-200 flex flex-col justify-between">
+            <div className="text-[10px] sm:text-[11px] font-bold text-stone-500 uppercase tracking-wider">
               1. Current Market Price
             </div>
-            <div className="my-2">
-              <span className="font-heading font-black text-xl text-stone-900">
+            <div className="my-1.5 sm:my-2">
+              <span className="font-heading font-black text-lg sm:text-xl text-stone-900">
                 ₹{simCurrentPrice.toLocaleString('en-IN')}
               </span>
               <span className="text-[10px] text-stone-500 block">/quintal</span>
@@ -261,12 +261,12 @@ export const FarmerDashboard: React.FC = () => {
           </div>
 
           {/* 2. Best Available Price */}
-          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-300 flex flex-col justify-between">
-            <div className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider">
+          <div className="p-3 sm:p-3.5 rounded-xl bg-emerald-50 border border-emerald-300 flex flex-col justify-between">
+            <div className="text-[10px] sm:text-[11px] font-bold text-emerald-800 uppercase tracking-wider">
               2. Best Available Price
             </div>
-            <div className="my-2">
-              <span className="font-heading font-black text-xl text-emerald-900">
+            <div className="my-1.5 sm:my-2">
+              <span className="font-heading font-black text-lg sm:text-xl text-emerald-900">
                 ₹{simBestPrice.toLocaleString('en-IN')}
               </span>
               <span className="text-[10px] text-emerald-700 block">/quintal</span>
@@ -275,12 +275,12 @@ export const FarmerDashboard: React.FC = () => {
           </div>
 
           {/* 3. Transport Cost */}
-          <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200 flex flex-col justify-between">
-            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+          <div className="p-3 sm:p-3.5 rounded-xl bg-stone-50 border border-stone-200 flex flex-col justify-between">
+            <div className="text-[10px] sm:text-[11px] font-bold text-stone-500 uppercase tracking-wider">
               3. Transport Cost
             </div>
-            <div className="my-2">
-              <span className="font-heading font-black text-xl text-rose-700">
+            <div className="my-1.5 sm:my-2">
+              <span className="font-heading font-black text-lg sm:text-xl text-rose-700">
                 -₹{simTransportCostPerQtl}
               </span>
               <span className="text-[10px] text-stone-500 block">/quintal</span>
@@ -289,12 +289,12 @@ export const FarmerDashboard: React.FC = () => {
           </div>
 
           {/* 4. Storage Cost */}
-          <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200 flex flex-col justify-between">
-            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+          <div className="p-3 sm:p-3.5 rounded-xl bg-stone-50 border border-stone-200 flex flex-col justify-between">
+            <div className="text-[10px] sm:text-[11px] font-bold text-stone-500 uppercase tracking-wider">
               4. Storage Cost
             </div>
-            <div className="my-2">
-              <span className="font-heading font-black text-xl text-rose-700">
+            <div className="my-1.5 sm:my-2">
+              <span className="font-heading font-black text-lg sm:text-xl text-rose-700">
                 -₹{simStorageCostPerQtl}
               </span>
               <span className="text-[10px] text-stone-500 block">/quintal</span>
@@ -303,12 +303,12 @@ export const FarmerDashboard: React.FC = () => {
           </div>
 
           {/* 5. APMC Cess */}
-          <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200 flex flex-col justify-between">
-            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+          <div className="p-3 sm:p-3.5 rounded-xl bg-stone-50 border border-stone-200 flex flex-col justify-between col-span-2 sm:col-span-1">
+            <div className="text-[10px] sm:text-[11px] font-bold text-stone-500 uppercase tracking-wider">
               5. APMC Cess
             </div>
-            <div className="my-2">
-              <span className="font-heading font-black text-xl text-rose-700">
+            <div className="my-1.5 sm:my-2">
+              <span className="font-heading font-black text-lg sm:text-xl text-rose-700">
                 -₹{simApmcCessPerQtl}
               </span>
               <span className="text-[10px] text-stone-500 block">/quintal</span>
@@ -317,38 +317,38 @@ export const FarmerDashboard: React.FC = () => {
           </div>
 
           {/* 6. Net Realization */}
-          <div className="p-3.5 rounded-xl bg-gradient-to-b from-emerald-100 to-emerald-50 border-2 border-emerald-500 flex flex-col justify-between">
-            <div className="text-[11px] font-black text-emerald-950 uppercase tracking-wider">
+          <div className="p-3.5 rounded-xl bg-gradient-to-b from-emerald-100 to-emerald-50 border-2 border-emerald-500 flex flex-col justify-between col-span-1 sm:col-span-1">
+            <div className="text-[10px] sm:text-[11px] font-black text-emerald-950 uppercase tracking-wider">
               6. Net Realization
             </div>
-            <div className="my-2">
-              <span className="font-heading font-black text-2xl text-emerald-950">
+            <div className="my-1.5 sm:my-2">
+              <span className="font-heading font-black text-xl sm:text-2xl text-emerald-950">
                 ₹{simNetRealizationPerQtl.toLocaleString('en-IN')}
               </span>
               <span className="text-[10px] text-emerald-800 font-bold block">/quintal</span>
             </div>
-            <div className="text-[10px] font-bold text-emerald-800">Net in Farmer Account</div>
+            <div className="text-[10px] font-bold text-emerald-800">Net in Account</div>
           </div>
 
           {/* 7. Potential Additional Income */}
-          <div className="p-3.5 rounded-xl bg-gradient-to-b from-amber-100 to-amber-50 border-2 border-amber-500 flex flex-col justify-between">
-            <div className="text-[11px] font-black text-amber-950 uppercase tracking-wider">
+          <div className="p-3.5 rounded-xl bg-gradient-to-b from-amber-100 to-amber-50 border-2 border-amber-500 flex flex-col justify-between col-span-1 sm:col-span-1">
+            <div className="text-[10px] sm:text-[11px] font-black text-amber-950 uppercase tracking-wider">
               7. Extra Income
             </div>
-            <div className="my-2">
-              <span className="font-heading font-black text-2xl text-amber-950">
+            <div className="my-1.5 sm:my-2">
+              <span className="font-heading font-black text-xl sm:text-2xl text-amber-950">
                 +₹{simTotalAdditionalIncome.toLocaleString('en-IN')}
               </span>
-              <span className="text-[10px] text-amber-900 font-bold block">on {simQuantity}q lot</span>
+              <span className="text-[10px] text-amber-900 font-bold block">on {simQuantity}q</span>
             </div>
-            <div className="text-[10px] font-extrabold text-amber-900">+₹{simPotentialAdditionalPerQtl}/qtl vs Mandi</div>
+            <div className="text-[10px] font-extrabold text-amber-900">+₹{simPotentialAdditionalPerQtl}/q vs Mandi</div>
           </div>
         </div>
 
         {/* Interactive Simulator Sliders for Evaluators */}
-        <div className="bg-stone-50 rounded-xl p-4 border border-stone-200">
+        <div className="bg-stone-50 rounded-xl p-3.5 sm:p-4 border border-stone-200">
           <div className="flex items-center gap-2 mb-3">
-            <Sliders className="w-4 h-4 text-emerald-700" />
+            <Sliders className="w-4 h-4 text-emerald-700 shrink-0" />
             <span className="text-xs font-bold text-stone-800">
               Interactive Net Realization Simulator (Adjust sliders to test dynamic yield recalculation):
             </span>
@@ -367,7 +367,7 @@ export const FarmerDashboard: React.FC = () => {
                 step="5"
                 value={simQuantity}
                 onChange={(e) => setSimQuantity(Number(e.target.value))}
-                className="w-full accent-emerald-600 cursor-pointer"
+                className="w-full h-2 rounded-lg bg-stone-200 accent-emerald-600 cursor-pointer"
               />
             </div>
 
@@ -383,7 +383,7 @@ export const FarmerDashboard: React.FC = () => {
                 step="5"
                 value={simDistanceKm}
                 onChange={(e) => setSimDistanceKm(Number(e.target.value))}
-                className="w-full accent-emerald-600 cursor-pointer"
+                className="w-full h-2 rounded-lg bg-stone-200 accent-emerald-600 cursor-pointer"
               />
             </div>
 
@@ -399,7 +399,7 @@ export const FarmerDashboard: React.FC = () => {
                 step="1"
                 value={simStorageDays}
                 onChange={(e) => setSimStorageDays(Number(e.target.value))}
-                className="w-full accent-emerald-600 cursor-pointer"
+                className="w-full h-2 rounded-lg bg-stone-200 accent-emerald-600 cursor-pointer"
               />
             </div>
           </div>

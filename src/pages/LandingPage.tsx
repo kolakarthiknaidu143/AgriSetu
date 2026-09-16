@@ -38,47 +38,47 @@ export const LandingPage: React.FC = () => {
   return (
     <div className="space-y-16 pb-16">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-12 pb-20 bg-gradient-to-b from-emerald-950 via-emerald-900 to-stone-900 text-white">
+      <section className="relative overflow-hidden pt-8 sm:pt-12 pb-14 sm:pb-20 bg-gradient-to-b from-emerald-950 via-emerald-900 to-stone-900 text-white">
         {/* Background ambient lighting */}
         <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px]" />
         <div className="absolute -top-40 right-10 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Hero Content */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-7 space-y-4 sm:space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-800/80 border border-emerald-700/60 text-emerald-200 text-xs font-semibold shadow-inner">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>Next-Gen Agricultural Intelligence & Escrow Platform</span>
+                <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <span className="truncate">Agricultural Intelligence & Simulated Escrow</span>
               </div>
 
-              <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-tight text-white">
+              <h1 className="font-heading font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-tight text-white">
                 Sell Smarter.{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-300 to-amber-300">
                   Earn Better.
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg text-emerald-100/90 leading-relaxed max-w-2xl">
-                AI-powered real-time market intelligence, price trend prediction, and verified institutional buyer matchmaking. Stop distress selling—maximize your net farm realization with digital contracts and simulated escrow safety.
+              <p className="text-sm sm:text-lg text-emerald-100/90 leading-relaxed max-w-2xl">
+                AI-powered market intelligence, price trend prediction, and verified institutional buyer matchmaking. Stop distress selling—maximize your net farm realization with digital contracts and simulated escrow safety.
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                 <button
                   onClick={() => setIsDemoModalOpen(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-stone-950 font-bold text-sm sm:text-base shadow-lg shadow-amber-500/20 transition-all hover:scale-102 active:scale-98"
+                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-stone-950 font-bold text-sm sm:text-base shadow-lg shadow-amber-500/20 transition-all hover:scale-102 active:scale-98 min-h-[48px]"
                 >
-                  <Sparkles className="w-5 h-5 text-stone-950" />
+                  <Sparkles className="w-5 h-5 text-stone-950 shrink-0" />
                   <span>Launch 20-Step Live Demo</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 shrink-0" />
                 </button>
 
                 <Link
                   to="/market-intelligence"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/20 font-semibold text-sm sm:text-base backdrop-blur transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/20 font-semibold text-sm sm:text-base backdrop-blur transition-colors min-h-[48px]"
                 >
-                  <BarChart3 className="w-5 h-5 text-emerald-300" />
+                  <BarChart3 className="w-5 h-5 text-emerald-300 shrink-0" />
                   <span>Explore Mandi Prices</span>
                 </Link>
               </div>
@@ -88,28 +88,28 @@ export const LandingPage: React.FC = () => {
                 <span className="text-xs font-semibold text-emerald-300 uppercase tracking-wider block mb-2">
                   Instant One-Click Persona Test:
                 </span>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2">
                   <button
                     onClick={() => handleQuickDemo('farmer')}
-                    className="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-medium border border-emerald-600/50 transition-colors"
+                    className="px-3 py-2 rounded-xl bg-emerald-800/90 hover:bg-emerald-700 text-white text-xs font-medium border border-emerald-600/50 transition-colors min-h-[40px] text-center"
                   >
-                    👨‍🌾 Farmer Dashboard
+                    👨‍🌾 Farmer
                   </button>
                   <button
                     onClick={() => handleQuickDemo('fpo')}
-                    className="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-medium border border-emerald-600/50 transition-colors"
+                    className="px-3 py-2 rounded-xl bg-emerald-800/90 hover:bg-emerald-700 text-white text-xs font-medium border border-emerald-600/50 transition-colors min-h-[40px] text-center"
                   >
                     🏢 FPO Aggregator
                   </button>
                   <button
                     onClick={() => handleQuickDemo('buyer')}
-                    className="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-medium border border-emerald-600/50 transition-colors"
+                    className="px-3 py-2 rounded-xl bg-emerald-800/90 hover:bg-emerald-700 text-white text-xs font-medium border border-emerald-600/50 transition-colors min-h-[40px] text-center"
                   >
                     🏭 Verified Buyer
                   </button>
                   <button
                     onClick={() => handleQuickDemo('admin')}
-                    className="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-medium border border-emerald-600/50 transition-colors"
+                    className="px-3 py-2 rounded-xl bg-emerald-800/90 hover:bg-emerald-700 text-white text-xs font-medium border border-emerald-600/50 transition-colors min-h-[40px] text-center"
                   >
                     ⚖️ APMC Admin
                   </button>
@@ -119,31 +119,31 @@ export const LandingPage: React.FC = () => {
 
             {/* Right Hero Live Market Card */}
             <div className="lg:col-span-5">
-              <div className="bg-stone-900/90 rounded-2xl border border-emerald-500/30 p-6 shadow-2xl backdrop-blur space-y-4">
+              <div className="bg-stone-900/90 rounded-2xl border border-emerald-500/30 p-4 sm:p-6 shadow-2xl backdrop-blur space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-stone-800">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
                     <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                      Live Mandi Ticker • Andhra Pradesh
+                      Demo Market Data • Andhra Pradesh
                     </span>
                   </div>
-                  <span className="text-[11px] text-stone-400 font-mono">Today, Sep 15</span>
+                  <span className="text-[11px] text-stone-400 font-mono">Today</span>
                 </div>
 
                 {/* Mandi Cards */}
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {topPrices.length === 0 ? (
-                    <div className="text-xs text-stone-400 py-4 text-center">Loading live APMC quotes...</div>
+                    <div className="text-xs text-stone-400 py-4 text-center">Loading APMC quotes...</div>
                   ) : (
                     topPrices.map((p, idx) => (
                       <div
                         key={idx}
-                        className="p-3 rounded-xl bg-stone-800/80 border border-stone-700/60 flex items-center justify-between hover:border-emerald-500/50 transition-all"
+                        className="p-3 rounded-xl bg-stone-800/80 border border-stone-700/60 flex items-center justify-between hover:border-emerald-500/50 transition-all gap-2"
                       >
-                        <div>
-                          <div className="text-xs text-stone-400">{p.marketName} Mandi</div>
-                          <div className="text-sm font-bold text-white flex items-center gap-1.5">
-                            <span>{p.cropName} (Grade A)</span>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs text-stone-400 truncate">{p.marketName} Mandi</div>
+                          <div className="text-sm font-bold text-white flex items-center gap-1.5 flex-wrap">
+                            <span>{p.cropName}</span>
                             <span className="text-[10px] text-emerald-400 font-semibold px-1 rounded bg-emerald-950/60">
                               +{p.priceChangePercentage}%
                             </span>
@@ -152,8 +152,8 @@ export const LandingPage: React.FC = () => {
                             Arrivals: {p.arrivalQuantity} {p.arrivalUnit}
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-lg font-black text-amber-400">
+                        <div className="text-right shrink-0">
+                          <div className="text-base sm:text-lg font-black text-amber-400">
                             ₹{p.modalPrice.toLocaleString('en-IN')}
                             <span className="text-xs font-normal text-stone-400">/qtl</span>
                           </div>
@@ -169,17 +169,20 @@ export const LandingPage: React.FC = () => {
                 {/* AI Opportunity Callout */}
                 <div className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-950 to-stone-900 border border-emerald-500/40 space-y-1.5">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
-                    <Sparkles className="w-4 h-4" />
+                    <Sparkles className="w-4 h-4 shrink-0" />
                     <span>AI Recommendation for Tomato Farmers:</span>
                   </div>
                   <p className="text-xs text-emerald-100 leading-relaxed">
                     Madanapalle arrivals down 14%. <strong>Hold harvest 2–3 days</strong> in shaded crates; expected gain is +₹110/qtl over storage expense.
                   </p>
+                  <p className="text-[10px] text-amber-300/80 pt-0.5">
+                    AI-generated estimate — actual market prices may vary.
+                  </p>
                 </div>
 
                 <Link
                   to="/sale-window"
-                  className="block text-center text-xs text-emerald-400 font-semibold hover:underline"
+                  className="block text-center text-xs text-emerald-400 font-semibold hover:underline py-1"
                 >
                   View full 4-day sale window forecast →
                 </Link>
@@ -190,27 +193,27 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* KPI Stats Bar */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white rounded-2xl p-6 shadow-xl border border-stone-200">
-          <div className="text-center p-3">
-            <div className="font-heading font-black text-3xl text-emerald-800">45+</div>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8 relative z-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 bg-white rounded-2xl p-4 sm:p-6 shadow-xl border border-stone-200">
+          <div className="text-center p-2 sm:p-3">
+            <div className="font-heading font-black text-2xl sm:text-3xl text-emerald-800">45+</div>
             <div className="text-xs text-stone-500 font-medium mt-1">APMC Mandis Tracked</div>
-            <div className="text-[10px] text-emerald-600 font-semibold mt-0.5">Real-time daily arrivals</div>
+            <div className="text-[10px] text-emerald-600 font-semibold mt-0.5">Demo Market Data</div>
           </div>
-          <div className="text-center p-3 border-l border-stone-100">
-            <div className="font-heading font-black text-3xl text-emerald-800">₹300+</div>
+          <div className="text-center p-2 sm:p-3 border-l border-stone-100">
+            <div className="font-heading font-black text-2xl sm:text-3xl text-emerald-800">₹300+</div>
             <div className="text-xs text-stone-500 font-medium mt-1">Average Price Upside / Qtl</div>
             <div className="text-[10px] text-emerald-600 font-semibold mt-0.5">+₹15,000 extra per 50q lot</div>
           </div>
-          <div className="text-center p-3 border-l border-stone-100">
-            <div className="font-heading font-black text-3xl text-emerald-800">98.6%</div>
+          <div className="text-center p-2 sm:p-3 border-t md:border-t-0 md:border-l border-stone-100">
+            <div className="font-heading font-black text-2xl sm:text-3xl text-emerald-800">98.6%</div>
             <div className="text-xs text-stone-500 font-medium mt-1">Payment Reliability</div>
             <div className="text-[10px] text-emerald-600 font-semibold mt-0.5">Verified Corporate Buyers</div>
           </div>
-          <div className="text-center p-3 border-l border-stone-100">
-            <div className="font-heading font-black text-3xl text-emerald-800">100%</div>
-            <div className="text-xs text-stone-500 font-medium mt-1">Simulated Escrow Protection</div>
-            <div className="text-[10px] text-emerald-600 font-semibold mt-0.5">Zero payment default risk</div>
+          <div className="text-center p-2 sm:p-3 border-t md:border-t-0 border-l border-stone-100">
+            <div className="font-heading font-black text-2xl sm:text-3xl text-emerald-800">100%</div>
+            <div className="text-xs text-stone-500 font-medium mt-1">SIMULATED ESCROW — Prototype</div>
+            <div className="text-[10px] text-emerald-600 font-semibold mt-0.5">Simulated Settlement</div>
           </div>
         </div>
       </section>
@@ -317,18 +320,18 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* How It Works 5-Step Flow */}
-      <section className="bg-stone-50 py-16 border-y border-stone-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <section className="bg-stone-50 py-10 sm:py-16 border-y border-stone-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-xs font-bold tracking-wider uppercase text-emerald-700">
               Simple 5-Step Digital Workflow
             </span>
-            <h2 className="font-heading font-black text-3xl text-stone-900">
+            <h2 className="font-heading font-black text-2xl sm:text-3xl text-stone-900">
               From Farmgate Harvest to Guaranteed Payment
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
             <div className="p-4 rounded-xl bg-white border border-stone-200 space-y-2">
               <div className="w-8 h-8 rounded-full bg-emerald-800 text-white font-bold text-sm flex items-center justify-center">
                 1
@@ -369,7 +372,7 @@ export const LandingPage: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-white border border-stone-200 space-y-2">
+            <div className="p-4 rounded-xl bg-white border border-stone-200 space-y-2 sm:col-span-2 lg:col-span-1">
               <div className="w-8 h-8 rounded-full bg-emerald-800 text-white font-bold text-sm flex items-center justify-center">
                 5
               </div>
@@ -384,24 +387,24 @@ export const LandingPage: React.FC = () => {
 
       {/* 20-Step Live Tour Call to Action Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-gradient-to-r from-emerald-900 via-emerald-800 to-amber-900 text-white p-8 sm:p-12 shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-3 max-w-2xl">
+        <div className="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-900 via-emerald-800 to-amber-900 text-white p-6 sm:p-12 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
+          <div className="space-y-3 max-w-2xl text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400 text-stone-950 text-xs font-black uppercase">
               Interactive Live Walkthrough
             </div>
-            <h3 className="font-heading font-black text-2xl sm:text-3xl text-white">
+            <h3 className="font-heading font-black text-xl sm:text-3xl text-white">
               Watch a 50 Quintal Tomato Lot Flow from Farm to Settlement in 20 Steps
             </h3>
-            <p className="text-sm text-emerald-100 leading-relaxed">
+            <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed">
               Step through every click: Farmer Ramesh Naidu listing, AI price prediction, counter-negotiation with ABC Foods, logistics dispatch, quality weighbridge inspection, and deterministic escrow release.
             </p>
           </div>
-          <div>
+          <div className="w-full md:w-auto">
             <button
               onClick={() => setIsDemoModalOpen(true)}
-              className="px-6 py-3.5 rounded-xl bg-white hover:bg-stone-100 text-emerald-950 font-extrabold text-sm sm:text-base shadow-lg transition-transform hover:scale-105 active:scale-95 whitespace-nowrap flex items-center gap-2"
+              className="w-full md:w-auto px-6 py-3.5 rounded-xl bg-white hover:bg-stone-100 active:bg-stone-200 text-emerald-950 font-extrabold text-sm sm:text-base shadow-lg transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 min-h-[48px]"
             >
-              <Sparkles className="w-5 h-5 text-amber-600" />
+              <Sparkles className="w-5 h-5 text-amber-600 shrink-0" />
               <span>Start 20-Step Demo Tour</span>
             </button>
           </div>
